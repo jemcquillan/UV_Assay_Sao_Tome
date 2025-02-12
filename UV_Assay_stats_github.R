@@ -10,7 +10,6 @@ library(ggplot2)
 
 #Set-Up Data
 #path <- "<add_path>"
-path <- "D:\\OneDrive\\Manuscripts\\UV_Zap_assy_GDRive_Win_Temp\\EvoEco\\EcoEvo_Code_and_Data"
 UV_Table <- read.table(file.path(path,'UV_Zap_Data.txt'),sep = '\t',
                        header = T,check.names = F, comment.char = "",quote = "" )
 
