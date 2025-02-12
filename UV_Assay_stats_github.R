@@ -1,4 +1,3 @@
-library(dplyr)
 library(tidyr)
 library(stringr)
 library(lemon)
@@ -10,6 +9,7 @@ library(ggplot2)
 
 #Set-Up Data
 #path <- "<add_path>"
+
 UV_Table <- read.table(file.path(path,'UV_Zap_Data.txt'),sep = '\t',
                        header = T,check.names = F, comment.char = "",quote = "" )
 
@@ -274,21 +274,24 @@ ggplot(UV_Table_all, aes(x = Region, FellMean, colour = Sex))+
 
 # Variance test on Fall time outside of ANOVA replicates
 # Reshape the data from wide to long format
-UV_Table_long <- UV_Table_all %>%
+UV_Table_sex_pop <- UV_Table_all %>%
   gather(key = "FellTime", value = "FellValue", `1st_felled`:`5th_felled`)
 
 # Perform the F-test on the variances between sexes
 # Group by 'Sex' and run the F-test on the 'FellValue' variable
-f_test_sex <- var.test(FellValue ~ Sex, data = UV_Table_long)
+f_test_sex <- var.test(FellValue ~ Sex, data = UV_Table_sex_pop)
+
+# Print result
+print(f_test_sex)
 
 # Perform Levene's Test between populations [Region factor]
-levene_test_region <- leveneTest(FellValue ~ Region, data = UV_Table_long)
+levene_test_region <- leveneTest(FellValue ~ Region, data = UV_Table_sex_pop)
 
 # Print the result
 print(levene_test_region)
 
 # Perform Bartlett's Test between populations [Region factor]
-bartlett_test_region <- bartlett.test(FellValue ~ Region, data = UV_Table_long)
+bartlett_test_region <- bartlett.test(FellValue ~ Region, data = UV_Table_sex_pop)
 
 # Print the result
 print(bartlett_test_region)
